@@ -8,6 +8,12 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('HomePage'),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.logout),
+          ),
+        ],
       ),
       body: Container(),
     );
