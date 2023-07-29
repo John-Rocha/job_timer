@@ -11,7 +11,7 @@
 ///      fonts:
 ///       - asset: fonts/JobTimer.ttf
 ///
-/// 
+///
 /// * Font Awesome 4, Copyright (C) 2016 by Dave Gandy
 ///         Author:    Dave Gandy
 ///         License:   SIL ()
@@ -29,6 +29,8 @@ class JobTimer {
   static const _kFontFam = 'JobTimer';
   static const String? _kFontPkg = null;
 
-  static const IconData ok_circled2 = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData angle_double_right = IconData(0xf101, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData okCircled2 =
+      IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData angleDoubleRight =
+      IconData(0xf101, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }
