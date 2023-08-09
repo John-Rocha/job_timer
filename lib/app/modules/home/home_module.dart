@@ -13,8 +13,9 @@ class HomeModule extends Module {
   List<ModularRoute> get routes => [
         ChildRoute(
           '/',
-          child: (context, args) =>
-              HomePage(controller: Modular.get()..loadProjects()),
+          child: (context, args) => HomePage(
+            controller: Modular.get()..loadProjects(),
+          ),
         )
       ];
 }
