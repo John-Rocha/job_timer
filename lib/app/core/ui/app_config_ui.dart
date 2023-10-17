@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
-class AppConfigUi {
-  AppConfigUi._();
-
+sealed class AppConfigUi {
   static const MaterialColor _primarySwatch = MaterialColor(0XFF0066B0, {
     50: Color(0xFFE0EDF6),
     100: Color(0xFFB3D1E7),
