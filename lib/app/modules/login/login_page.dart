@@ -4,10 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:job_timer/app/modules/login/controller/login_controller.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({
-    super.key,
-    required this.controller,
-  });
+  const LoginPage({super.key, required this.controller});
 
   final LoginController controller;
 
@@ -56,9 +53,7 @@ class LoginPage extends StatelessWidget {
                 ),
                 BlocSelector<LoginController, LoginState, bool>(
                   bloc: controller,
-                  selector: (state) {
-                    return state.status == LoginStatus.loading;
-                  },
+                  selector: (state) => state.status == LoginStatus.loading,
                   builder: (context, show) {
                     return Visibility(
                       visible: show,

@@ -35,6 +35,7 @@ class ProjectDetailPage extends StatelessWidget {
               const ProjectTaskTile(),
               const ProjectTaskTile(),
               const ProjectTaskTile(),
+              const ProjectTaskTile(),
             ]),
           ),
           SliverFillRemaining(

@@ -21,10 +21,11 @@ class HomePage extends StatelessWidget {
         }
       },
       child: Scaffold(
-        drawer: const Drawer(
+        drawer: Drawer(
           child: SafeArea(
             child: ListTile(
-              title: Text('Sair'),
+              title: const Text('Sair'),
+              onTap: () {},
             ),
           ),
         ),
