@@ -95,15 +95,16 @@ class HomePage extends StatelessWidget {
                 bloc: controller,
                 selector: (state) => state.status == HomeStatus.loading,
                 builder: (context, showLoading) => SliverVisibility(
-                    visible: showLoading,
-                    sliver: const SliverToBoxAdapter(
-                      child: SizedBox(
-                        height: 50,
-                        child: Center(
-                          child: CircularProgressIndicator.adaptive(),
-                        ),
+                  visible: showLoading,
+                  sliver: const SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 50,
+                      child: Center(
+                        child: CircularProgressIndicator.adaptive(),
                       ),
-                    )),
+                    ),
+                  ),
+                ),
               ),
               BlocSelector<HomeController, HomeState, List<ProjectViewModel>>(
                 bloc: controller,
