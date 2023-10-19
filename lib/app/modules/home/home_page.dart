@@ -1,9 +1,12 @@
 import 'package:asuka/asuka.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:job_timer/app/modules/home/controller/home_controller.dart';
 import 'package:job_timer/app/modules/home/widgets/header_projects_menu.dart';
 import 'package:job_timer/app/modules/home/widgets/project_tile.dart';
+import 'package:job_timer/app/services/auth/auth_service.dart';
 import 'package:job_timer/app/view_model/project_view_model.dart';
 
 class HomePage extends StatelessWidget {
@@ -13,6 +16,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final auth = FirebaseAuth.instance.currentUser;
+
     return BlocListener<HomeController, HomeState>(
       bloc: controller,
       listener: (context, state) {
@@ -23,9 +28,35 @@ class HomePage extends StatelessWidget {
       child: Scaffold(
         drawer: Drawer(
           child: SafeArea(
-            child: ListTile(
-              title: const Text('Sair'),
-              onTap: () {},
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CircleAvatar(
+                    radius: 50,
+                    backgroundImage: auth?.photoURL != null
+                        ? NetworkImage(auth!.photoURL!)
+                        : null,
+                    child: auth?.photoURL == null
+                        ? const Icon(
+                            Icons.person,
+                            size: 50,
+                          )
+                        : null,
+                  ),
+                ),
+                auth?.displayName != null
+                    ? Text(auth!.displayName!)
+                    : const SizedBox.shrink(),
+                ListTile(
+                  leading: const Icon(Icons.logout),
+                  title: const Text('Sair'),
+                  onTap: () {
+                    Modular.get<AuthService>().logout();
+                    Modular.to.navigate('/login/');
+                  },
+                ),
+              ],
             ),
           ),
         ),

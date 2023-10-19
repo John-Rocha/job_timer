@@ -5,9 +5,10 @@ import 'package:job_timer/app/entities/project_status.dart';
 import 'package:job_timer/app/modules/home/controller/home_controller.dart';
 
 class HeaderProjectsMenu extends SliverPersistentHeaderDelegate {
+  HeaderProjectsMenu({required this.controller});
+
   final HomeController controller;
 
-  HeaderProjectsMenu({required this.controller});
   @override
   Widget build(
     BuildContext context,
@@ -23,37 +24,39 @@ class HeaderProjectsMenu extends SliverPersistentHeaderDelegate {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              SizedBox(
-                width: constraints.maxWidth * .5,
-                child: DropdownButtonFormField<ProjectStatus>(
-                  value: ProjectStatus.inProgress,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
+              Flexible(
+                child: SizedBox(
+                  child: DropdownButtonFormField<ProjectStatus>(
+                    value: ProjectStatus.inProgress,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      contentPadding: const EdgeInsets.all(12),
+                      isCollapsed: true,
                     ),
-                    contentPadding: const EdgeInsets.all(12),
-                    isCollapsed: true,
+                    items: ProjectStatus.values
+                        .map(
+                          (e) => DropdownMenuItem(
+                            value: e,
+                            child: Text(e.label),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: controller.filter,
                   ),
-                  items: ProjectStatus.values
-                      .map(
-                        (e) => DropdownMenuItem(
-                          value: e,
-                          child: Text(e.label),
-                        ),
-                      )
-                      .toList(),
-                  onChanged: controller.filter,
                 ),
               ),
-              SizedBox(
-                width: constraints.maxWidth * .4,
-                child: ElevatedButton.icon(
-                  onPressed: () async {
-                    await Modular.to.pushNamed('/project/register/');
-                    controller.loadProjects();
-                  },
-                  icon: const Icon(Icons.add),
-                  label: const Text('Novo Projeto'),
+              Flexible(
+                child: SizedBox(
+                  child: ElevatedButton.icon(
+                    onPressed: () async {
+                      await Modular.to.pushNamed('/project/register/');
+                      controller.loadProjects();
+                    },
+                    icon: const Icon(Icons.add),
+                    label: const Text('Novo Projeto'),
+                  ),
                 ),
               )
             ],
