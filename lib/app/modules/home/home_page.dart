@@ -46,7 +46,19 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
                 auth?.displayName != null
-                    ? Text(auth!.displayName!)
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                        ),
+                        child: Text(
+                          auth!.displayName!,
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.grey.shade700,
+                          ),
+                        ),
+                      )
                     : const SizedBox.shrink(),
                 ListTile(
                   leading: const Icon(Icons.logout),
@@ -101,6 +113,8 @@ class HomePage extends StatelessWidget {
                     delegate: SliverChildListDelegate(
                       projetcs
                           .map((project) => ProjectTile(projectModel: project))
+                          .toList()
+                          .reversed
                           .toList(),
                     ),
                   );

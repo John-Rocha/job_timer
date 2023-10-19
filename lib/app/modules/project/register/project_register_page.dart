@@ -29,16 +29,28 @@ class _ProjectRegisterPageState extends State<ProjectRegisterPage> {
     _estimateEC.dispose();
   }
 
+  Future<void> _save() async {
+    final formValid = _formKey.currentState?.validate() ?? false;
+
+    if (formValid) {
+      final name = _nameEC.text;
+      final estimate = int.parse(_estimateEC.text);
+
+      await widget.controller.register(name, estimate);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<ProjectRegisterController, ProjectRegisterStatus>(
       bloc: widget.controller,
       listener: (context, state) => switch (state) {
-        ProjectRegisterStatus.initial => const SizedBox.shrink(),
-        ProjectRegisterStatus.loading => const SizedBox.shrink(),
+        ProjectRegisterStatus.initial ||
+        ProjectRegisterStatus.loading =>
+          const SizedBox.shrink(),
         ProjectRegisterStatus.success => Navigator.of(context).pop(),
         ProjectRegisterStatus.failure =>
-          AsukaSnackbar.alert('Erro ao salvar proejto'),
+          AsukaSnackbar.alert('Erro ao salvar o projeto'),
       },
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -63,6 +75,7 @@ class _ProjectRegisterPageState extends State<ProjectRegisterPage> {
               children: [
                 TextFormField(
                   controller: _nameEC,
+                  onTapOutside: (event) => FocusScope.of(context).unfocus(),
                   decoration: const InputDecoration(
                     label: Text('Nome do projeto'),
                   ),
@@ -86,17 +99,7 @@ class _ProjectRegisterPageState extends State<ProjectRegisterPage> {
                     label: 'Salvar',
                     bloc: widget.controller,
                     selector: (state) => state == ProjectRegisterStatus.loading,
-                    onPressed: () async {
-                      final formValid =
-                          _formKey.currentState?.validate() ?? false;
-
-                      if (formValid) {
-                        final name = _nameEC.text;
-                        final estimate = int.parse(_estimateEC.text);
-
-                        await widget.controller.register(name, estimate);
-                      }
-                    },
+                    onPressed: _save,
                   ),
                 )
               ],
