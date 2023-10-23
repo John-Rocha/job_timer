@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:job_timer/app/core/constants/constants.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -35,7 +36,7 @@ class _SplashPageState extends State<SplashPage> {
           ),
         ),
         child: Center(
-          child: Image.asset('assets/images/logo.png'),
+          child: Image.asset(Constants.logo),
         ),
       ),
     );
