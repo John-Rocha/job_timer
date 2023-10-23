@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:job_timer/app/core/ui/job_timer_icons.dart';
+import 'package:job_timer/app/modules/home/controller/home_controller.dart';
 import 'package:job_timer/app/view_model/project_view_model.dart';
 
 class ProjectTile extends StatelessWidget {
@@ -8,25 +9,51 @@ class ProjectTile extends StatelessWidget {
 
   final ProjectViewModel projectModel;
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      constraints: const BoxConstraints(maxHeight: 90),
-      margin: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: Colors.grey[300]!,
-          width: 4,
+  Future<void> _diplayBottomSheet(BuildContext context) async {
+    return showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(28),
         ),
       ),
-      child: Column(
-        children: [
-          _ProjectName(projectModel: projectModel),
-          Expanded(
-            child: _ProjectProgress(projectModel: projectModel),
+      builder: (context) => Container(
+        height: MediaQuery.of(context).size.height * .45,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () async {
+        await Modular.to.pushNamed(
+          '/project/detail/',
+          arguments: projectModel,
+        );
+        Modular.get<HomeController>().updateList();
+      },
+      onLongPress: () => _diplayBottomSheet(context),
+      child: Container(
+        constraints: const BoxConstraints(maxHeight: 90),
+        margin: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: Colors.grey[300]!,
+            width: 4,
           ),
-        ],
+        ),
+        child: Column(
+          children: [
+            _ProjectName(projectModel: projectModel),
+            Expanded(
+              child: _ProjectProgress(
+                projectModel: projectModel,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -39,28 +66,21 @@ class _ProjectName extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        Modular.to.pushNamed(
-          '/project/detail/',
-          arguments: projectModel,
-        );
-      },
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              projectModel.name.toUpperCase(),
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            Icon(
-              JobTimer.angleDoubleRight,
-              color: Theme.of(context).primaryColor,
-            )
-          ],
-        ),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            projectModel.name.toUpperCase(),
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          Icon(
+            JobTimer.angleDoubleRight,
+            color: Theme.of(context).primaryColor,
+            size: 20,
+          )
+        ],
       ),
     );
   }
@@ -75,7 +95,8 @@ class _ProjectProgress extends StatelessWidget {
   Widget build(BuildContext context) {
     final totalTasks = projectModel.tasks
         .fold(0, (previousValue, task) => previousValue += task.duration);
-    var percent = 0.0;
+
+    double percent = 0.0;
 
     if (totalTasks > 0) {
       percent = totalTasks / projectModel.estimate;

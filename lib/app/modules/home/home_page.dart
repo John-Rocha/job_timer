@@ -1,4 +1,4 @@
-import 'package:asuka/asuka.dart';
+import 'package:asuka/asuka.dart' as asuka;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
       bloc: controller,
       listener: (context, state) {
         if (state.status == HomeStatus.failure) {
-          AsukaSnackbar.alert('Erro ao buscar os projetos').show();
+          asuka.AsukaSnackbar.alert('Erro ao buscar os projetos').show();
         }
       },
       child: Scaffold(
@@ -108,15 +108,15 @@ class HomePage extends StatelessWidget {
               ),
               BlocSelector<HomeController, HomeState, List<ProjectViewModel>>(
                 bloc: controller,
-                selector: (state) => state.projects,
+                selector: (state) => state.projects.reversed.toList(),
                 builder: (context, projetcs) {
                   return SliverList(
-                    delegate: SliverChildListDelegate(
-                      projetcs
-                          .map((project) => ProjectTile(projectModel: project))
-                          .toList()
-                          .reversed
-                          .toList(),
+                    delegate: SliverChildBuilderDelegate(
+                      childCount: projetcs.length,
+                      (context, index) {
+                        final project = projetcs[index];
+                        return ProjectTile(projectModel: project);
+                      },
                     ),
                   );
                 },

@@ -31,12 +31,15 @@ class _ProjectRegisterPageState extends State<ProjectRegisterPage> {
 
   Future<void> _save() async {
     final formValid = _formKey.currentState?.validate() ?? false;
+    final navigator = Navigator.of(context);
 
     if (formValid) {
       final name = _nameEC.text;
       final estimate = int.parse(_estimateEC.text);
 
       await widget.controller.register(name, estimate);
+
+      navigator.pop();
     }
   }
 
