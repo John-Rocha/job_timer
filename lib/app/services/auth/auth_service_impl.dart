@@ -4,8 +4,6 @@ import './auth_service.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthServiceImpl implements AuthService {
-  User? user;
-
   @override
   Future<void> signIn() async {
     final googleUser = await GoogleSignIn().signIn();
